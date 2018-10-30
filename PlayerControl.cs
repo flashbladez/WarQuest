@@ -6,8 +6,8 @@ namespace WarQuest.Characters
 {
     public class PlayerControl : MonoBehaviour
     {
-                 
-        SpecialAbilities abilities;   
+
+        SpecialAbilities abilities;
         Character character;
         WeaponSystem weaponSystem;
         Animator animator;
@@ -22,15 +22,20 @@ namespace WarQuest.Characters
             healthSystem = GetComponent<HealthSystem>();
             RegisterForMouseEvents();
         }
-         
-    void Update()
+
+        void Update()
         {
             if (AnimatorIsPlaying("Grounded") && healthSystem.CurrentHealthPoints < healthSystem.MaxHealthpoints)
             {
                 healthSystem.AutoRegenerateHealth();
             }
+
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                GetComponent<PlayerStats>().DisplayStats();
+            }
             ScanForAbilityKeyDown();
-          // KeyBoardControl();
+            // KeyBoardControl();
         }
 
         bool AnimatorIsPlaying(string stateName)
@@ -60,26 +65,26 @@ namespace WarQuest.Characters
 
         bool IsTargetInRange(GameObject target)
         {
-           
-           if (target && target.GetComponent<HealthSystem>().healthAsPercentage > Mathf.Epsilon)
-           {
+
+            if (target && target.GetComponent<HealthSystem>().healthAsPercentage > Mathf.Epsilon)
+            {
                 float distanceToTarget = (target.transform.position - transform.position).magnitude;
                 return distanceToTarget <= weaponSystem.UpdateCurrentWeapon.GetMaxAttackRange();
-           }
+            }
             return false;
         }
 
         void OnMouseOverEnemy(EnemyAI enemy)
         {
-          
+
             if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
             {
-            //    print("In Range");
+                //    print("In Range");
                 weaponSystem.AttackTarget(enemy.gameObject);
             }
             else if (Input.GetMouseButton(0) && !IsTargetInRange(enemy.gameObject))
             {
-             //   print("move and attack");
+                //   print("move and attack");
                 StartCoroutine(MoveAndAttack(enemy));
             }
         }
@@ -91,11 +96,11 @@ namespace WarQuest.Characters
             cameraRaycaster.onMouseOverPotentiallyWalkable += OnMouseOverPotentiallyWalkable;
         }
 
-       
+
 
         public void TakeDamage(float damage)
         {
-           
+
         }
 
         IEnumerator MoveToTarget(GameObject target)
@@ -107,7 +112,7 @@ namespace WarQuest.Characters
             }
             yield return new WaitForEndOfFrame();
         }
-       
+
         IEnumerator MoveAndAttack(EnemyAI enemy)
         {
             yield return StartCoroutine(MoveToTarget(enemy.gameObject));

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //This script deals with keeping the player stats updated and saved by other scripts
 
@@ -20,18 +21,29 @@ namespace WarQuest.Characters
         [SerializeField] PlayerStatsConfig playerStatsConfig;
         [SerializeField] ArmourEquippedConfig armourEquippedConfig;
 
+        [SerializeField] Text staminaDisplay = null;
+        [SerializeField] Text energyDisplay = null;
+        [SerializeField] Text strengthDisplay = null;
+        [SerializeField] Text hitDisplay = null;
+        [SerializeField] Text mentalAgilityDisplay = null;
+        [SerializeField] Text armourDisplay = null;
+        [SerializeField] Text damageDisplay = null;
+
         [Header("Base Stats at level 1")]
         [SerializeField] float baseArmour = 0f;
         [SerializeField] float baseDamage = 0f;
 
+        GameObject uidDisplay;
         WeaponSystem weaponSystem;
         HealthSystem healthSystem;
         SpecialAbilities specialAbility;
         PlayerXP playerXp;
         int currentLevel;
         float currentXp;
-       
-        void Start()
+        bool playerIsAlive = false;
+        bool uiOpen = false;
+
+        private void Awake()
         {
             playerXp = GetComponent<PlayerXP>();
             weaponSystem = GetComponent<WeaponSystem>();
@@ -39,8 +51,11 @@ namespace WarQuest.Characters
             specialAbility = GetComponent<SpecialAbilities>();
             // var head = armourEquippedConfig.HeadSlotEquipped;
             //  print(head.GetObjectName());//it works
-            weaponSystem.UpdateCurrentWeapon = armourEquippedConfig.WeaponSlotEquipped;
+            uidDisplay = GameObject.Find("Environment/Game Canvas/PlayerStatsDisplay");
             SetUpPlayerStats();
+            healthSystem.SethealthBarText();
+            specialAbility.SetEergyBarText();
+            PlayerIsAlive = true;
         }
 
         public ArmourEquippedConfig ArmourEquippedConfig
@@ -53,8 +68,46 @@ namespace WarQuest.Characters
             get { return playerStatsConfig; }
         }
 
-        //todo add stats from when on first play level1
-        //****************************************************************
+        public bool PlayerIsAlive
+        {
+            get { return playerIsAlive; }
+            set { playerIsAlive = value; }
+        }
+
+        void Start()
+        {
+
+        }
+
+        public void DisplayStats()
+        {
+            uiOpen = !uiOpen;
+            uidDisplay.SetActive(uiOpen);
+            var staminaText = GameObject.Find("Environment/Game Canvas/PlayerStatsDisplay/StaminaDisplay");
+            var energyText = GameObject.Find("Environment/Game Canvas/PlayerStatsDisplay/EnergyDisplay");
+            var strengthText = GameObject.Find("Environment/Game Canvas/PlayerStatsDisplay/StrengthDisplay");
+            var mentalAgilityText = GameObject.Find("Environment/Game Canvas/PlayerStatsDisplay/MentalAgilityDisplay");
+            var hitText = GameObject.Find("Environment/Game Canvas/PlayerStatsDisplay/HitDisplay");
+            var armourText = GameObject.Find("Environment/Game Canvas/PlayerStatsDisplay/ArmourDisplay");
+            var damageText = GameObject.Find("Environment/Game Canvas/PlayerStatsDisplay/DamageDisplay");
+
+            staminaDisplay = staminaText.GetComponent<Text>();
+            energyDisplay = energyText.GetComponent<Text>();
+            strengthDisplay = strengthText.GetComponent<Text>();
+            mentalAgilityDisplay = mentalAgilityText.GetComponent<Text>();
+            hitDisplay = hitText.GetComponent<Text>();
+            armourDisplay = armourText.GetComponent<Text>();
+            damageDisplay = damageText.GetComponent<Text>();
+
+            staminaDisplay.text = playerStatsConfig.Stamina.ToString();
+            energyDisplay.text = playerStatsConfig.Energy.ToString();
+            strengthDisplay.text = playerStatsConfig.Strength.ToString();
+            mentalAgilityDisplay.text = playerStatsConfig.MentalAgility.ToString();
+            hitDisplay.text = playerStatsConfig.Hit.ToString();
+            armourDisplay.text = playerStatsConfig.TotalArmour.ToString();
+            damageDisplay.text = (baseDamage * playerStatsConfig.SavedLevel).ToString();
+        }
+
         //Calls the neccesary method to add extra points to each stat awarded for leveling up and writes new values to playerstatsconfig scriptable object
         public void LevelUpHealthPoints()
         {
