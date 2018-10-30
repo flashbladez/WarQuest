@@ -13,11 +13,10 @@ namespace WarQuest.Characters
 
         [SerializeField] float chaseRadius = 6f;
         [SerializeField] WayPointContainer patrolPath;
-        [SerializeField] float timeToWaitAtWayPoint = 2.0f;
+        [SerializeField] float timeToWaitAtWayPoint = 5.0f;
         [SerializeField] float wayPointTolerance = 1.0f;
         [SerializeField] int xpValue = 0;
-        [SerializeField] float damageToInflict;
-
+     
         int startingWaypoint;
         GameObject target;
         WeaponSystem weaponSystem;
@@ -34,7 +33,6 @@ namespace WarQuest.Characters
         {
             character = GetComponent<Character>();
             xPToAward = xpValue;
-            GetComponent<WeaponSystem>().SetBaseDamage = damageToInflict;
         }
 
         public float XpValue()
@@ -121,6 +119,7 @@ namespace WarQuest.Characters
             }
             else if (target.gameObject.GetComponent<PlayerControl>())
             {
+
                 this.target = target.gameObject;
                 xPToAward = xpValue;
             }
@@ -141,7 +140,7 @@ namespace WarQuest.Characters
             {
                 Vector3 nextWaypointPos = patrolPath.transform.GetChild(nextWaypointIndex).position;
                 character.SetDestination(nextWaypointPos);
-                yield return new WaitForSeconds(timeToWaitAtWayPoint);
+                yield return new WaitForSeconds(patrolPath.transform.GetChild(nextWaypointIndex).GetComponentInChildren<WayPointWait>().TimeToWait);
                 CycleWayPointWhenClose(nextWaypointPos);
             }
         }
@@ -151,7 +150,7 @@ namespace WarQuest.Characters
             //Todo put a 20s delay in to wait before he goes back to patrolling while hes watching you run away
             while (isInWeaponCircle) {
                 character.SetDestination(target.transform.position);
-                yield return new WaitForSeconds(timeToWaitAtWayPoint);
+                yield return new WaitForSeconds(patrolPath.transform.GetChild(nextWaypointIndex).GetComponentInChildren<WayPointWait>().TimeToWait);
                 StopAllCoroutines();
             }
        }

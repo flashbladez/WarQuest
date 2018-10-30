@@ -12,7 +12,7 @@ namespace WarQuest.Characters
       
         [SerializeField] float chaseRadius = 6f;
         [SerializeField] WayPointContainer patrolPath;
-        [SerializeField] float timeToWaitAtWayPoint = 2.0f;
+        [SerializeField] float timeToWaitAtWayPoint = 5.0f;
         [SerializeField] float wayPointTolerance = 1.0f;
         [SerializeField] float damageToInflict;
 

@@ -12,7 +12,10 @@ namespace WarQuest.Characters
         [SerializeField] bool yellow = false;
         [SerializeField] bool cyan = false;
         [SerializeField] bool red = false;
-       
+        [SerializeField] bool blue = false;
+        [SerializeField] bool grey = false;
+        [SerializeField] string characterType = null;
+        
         void OnDrawGizmos()
         {
            // var newColour = myColour.ToString();
@@ -49,6 +52,15 @@ namespace WarQuest.Characters
                 {
                     Gizmos.color = Color.red;
                 }
+                if (blue)
+                {
+                    Gizmos.color = Color.blue;
+                }
+                if (grey)
+                {
+                    Gizmos.color = Color.grey;
+                }
+
                 Gizmos.DrawSphere(waypoint.position, .2f);
                 Gizmos.DrawLine(previousPosition, waypoint.position);
                 previousPosition = waypoint.position;

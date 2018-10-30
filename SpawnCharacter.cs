@@ -40,11 +40,6 @@ namespace WarQuest.Characters
             {
                 var thisNPCAIComponent = this.gameObject.transform.GetChild(0).GetComponent<NPCAI>();
                 thisNPCAIComponent.SetPatrolPath(patrolPathToAssign,startingWaypoint);
-                
-            }else if (this.gameObject.transform.GetChild(0).GetComponent<PlayerControl>())
-            {
-                
-             
             }
         }
     }

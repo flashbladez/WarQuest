@@ -41,7 +41,7 @@ namespace WarQuest.Characters
                 indexNumber = 0;
             }
             index = indexNumber;
-            print(index);
+
             UpdateAnimator();
         }
 

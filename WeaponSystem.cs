@@ -45,8 +45,6 @@ namespace WarQuest.Characters
             set{ currentWeaponConfig = value;}
         }
 
-
-
         void Update()
         {
             bool targetIsDead;
@@ -79,7 +77,9 @@ namespace WarQuest.Characters
 
         public void PutWeaponInHand(WeaponConfig weaponToUse)
         {
+           
             if (GetComponent<PlayerStats>()) {
+
                 playerStats.WeaponUpdate(weaponToUse);//let playerStats.WeaponUpdate know about new weapon
             }
             else
@@ -116,6 +116,7 @@ namespace WarQuest.Characters
         {
          
             target = targetToAttack;
+
             StartCoroutine(AttackTargetRepeatedly());
         }
 

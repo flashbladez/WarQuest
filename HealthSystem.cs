@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using WarQuest.CameraUI;
 
 namespace WarQuest.Characters
 {
@@ -18,15 +19,16 @@ namespace WarQuest.Characters
         [SerializeField] float armour;
         [SerializeField] Text healthDisplayText = null;
         [SerializeField] Image healthBar;
-        
 
-       
+
+        string zoneDetect = "Zone Detect";
         float currentHealthPoints = 0;
         Animator animator = null;
         AudioSource audioSource = null;
         Character characterMovement;
         PlayerStats playerStats;
-
+        EnemyStats enemyStats;
+      
         const string DEATH_TRIGGER = "Death";
 
        
@@ -47,6 +49,7 @@ namespace WarQuest.Characters
         {
             get{ return maxHealthPoints; }
             set{maxHealthPoints = value;
+                CurrentHealthPoints = MaxHealthpoints;
                 UpdateHealthBar();
             }
         }
@@ -65,6 +68,28 @@ namespace WarQuest.Characters
 
         void Start()
         {
+           
+            enemyStats = GetComponent<EnemyStats>();
+            playerStats = GetComponent<PlayerStats>();
+            animator = GetComponent<Animator>();
+            audioSource = GetComponent<AudioSource>();
+            characterMovement = GetComponent<Character>();
+         
+            CurrentHealthPoints = MaxHealthpoints;
+            UpdateHealthBar();
+        }
+
+
+        void Update()
+        {
+            if (CurrentHealthPoints < MaxHealthpoints)
+            {
+                AutoRegenerateHealth();
+            }
+        }
+
+        public  void SethealthBarText()
+        {
             if (GetComponent<PlayerControl>())
             {
                 var HB = GameObject.Find("Environment/Game Canvas/Health Bar");
@@ -72,23 +97,7 @@ namespace WarQuest.Characters
                 healthBar = HB.GetComponent<Image>();
                 healthDisplayText = HT.GetComponent<Text>();
             }
-            playerStats = GetComponent<PlayerStats>();
-            animator = GetComponent<Animator>();
-            audioSource = GetComponent<AudioSource>();
-            characterMovement = GetComponent<Character>();
-            CurrentHealthPoints = MaxHealthpoints;
-            UpdateHealthBar();
         }
-
-        void Update()
-        {
-            if (!gameObject.GetComponent<EnemyAI>() && CurrentHealthPoints < MaxHealthpoints)
-            {
-                AutoRegenerateHealth();
-            }
-        }
-
-      
         void UpdateHealthBar()
         {
             if (healthBar)
@@ -154,14 +163,23 @@ namespace WarQuest.Characters
             animator.SetTrigger(DEATH_TRIGGER);
             var playerComponent = GetComponent<PlayerControl>();
             var player = FindObjectOfType<PlayerXP>();
-            //will need to get this from enemyAI script
+           
             audioSource.clip = deathSounds[UnityEngine.Random.Range(0, deathSounds.Length)];
             audioSource.Play();
            
             if (playerComponent && playerComponent.isActiveAndEnabled)
-            { 
-                 yield return new WaitForSecondsRealtime(deathVanishSeconds);
-                 Destroy(gameObject, deathVanishSeconds);
+            {
+               // GetComponent<PlayerControl>().DeRegister();
+                yield return new WaitForSecondsRealtime(deathVanishSeconds);
+
+                var audioSource = GameObject.FindGameObjectsWithTag(zoneDetect);
+                foreach(GameObject go in audioSource)
+                {
+                    var audio = go.GetComponent<AudioSource>();
+                    audio.Stop();
+                }
+               
+                Destroy(gameObject, deathVanishSeconds);
             }
             else
             {

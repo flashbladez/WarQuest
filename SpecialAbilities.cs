@@ -38,13 +38,6 @@ namespace WarQuest.Characters
 
         void Start()
         {
-            if (GetComponent<PlayerControl>())
-            {
-                var EnergyB = GameObject.Find("Environment/Game Canvas/EnergyBar");
-                var EnergyT = GameObject.Find("Environment/Game Canvas/EnergyText");
-                energyBar = EnergyB.GetComponent<RawImage>();
-                energyTextAmount = EnergyT.GetComponent<Text>();
-            }
             CurrentEnergyPoints = MaxEnergyPoints;
             audioSource = GetComponent<AudioSource>();
             AttachInitialAbilities();
@@ -60,6 +53,17 @@ namespace WarQuest.Characters
             if (CurrentEnergyPoints > MaxEnergyPoints)
             {
                 CurrentEnergyPoints = MaxEnergyPoints;
+            }
+        }
+
+        public void SetEergyBarText()
+        {
+            if (GetComponent<PlayerControl>())
+            {
+                var EnergyB = GameObject.Find("Environment/Game Canvas/EnergyBar");
+                var EnergyT = GameObject.Find("Environment/Game Canvas/EnergyText");
+                energyBar = EnergyB.GetComponent<RawImage>();
+                energyTextAmount = EnergyT.GetComponent<Text>();
             }
         }
       
