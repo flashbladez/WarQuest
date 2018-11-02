@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace WarQuest.Characters
 {
     public class PlayerXP : MonoBehaviour
@@ -10,14 +11,14 @@ namespace WarQuest.Characters
         [SerializeField] Image xpBar;
         [SerializeField] Text xpText;
         [SerializeField] Text levelText;
-        [SerializeField] float multiplierForNextLevel = 25f;
+        [SerializeField] float multiplierForNextLevel = 3f;
         
 
-        int currentLevel = 1;
-        float xpToLevel = 100f;
-        float currentXp = 0f;
+        int currentLevel;
+        float xpToLevel;
+        float currentXp;
 
-        PlayerStats characterStats;
+        PlayerStats playerStats;
 
         void Start()
         {
@@ -30,7 +31,8 @@ namespace WarQuest.Characters
                 xpText = XPT.GetComponent<Text>();
                 levelText = LevelT.GetComponent<Text>();
             }
-            characterStats = GetComponent<PlayerStats>();
+            playerStats = GetComponent<PlayerStats>();
+           
             UpdateXpBar();
         }
 
@@ -61,7 +63,7 @@ namespace WarQuest.Characters
         public void XpToBeAwarded(float xpToAdd)
         {
             CurrentXP += xpToAdd;
-            characterStats.CurrentXp();
+            playerStats.CurrentXp();
             UpdateXpBar();
         }
 
@@ -83,15 +85,16 @@ namespace WarQuest.Characters
                 CurrentXP -= XpToLevel;
                 Level += 1;
                 XpToLevel += Mathf.Round(XpToLevel * multiplierForNextLevel) / Level;
-                characterStats.LevelUpHealthPoints();
-                characterStats.LevelUpEnergyPoints();
-                characterStats.LevelUpStrengthPoints();
-                characterStats.LevelUpMentalAgility();
-                characterStats.LevelUpHitPoints();
-                characterStats.LevelUpArmourPoints();
-                characterStats.CurrentLevel();
-                characterStats.CurrentXp();
-                characterStats.MaxXp();
+                playerStats.LevelUpHealthPoints();
+                playerStats.LevelUpEnergyPoints();
+                playerStats.LevelUpStrengthPoints();
+                playerStats.LevelUpMentalAgility();
+                playerStats.LevelUpHitPoints();
+                playerStats.LevelUpArmourPoints();
+                playerStats.CurrentLevel();
+                playerStats.CurrentXp();
+                playerStats.MaxXp();
+                playerStats. SaveStatsToPlayerPrefs();
                 UpdateXpBar();
             }
             xpText.text = (CurrentXP.ToString() + "/" + XpToLevel.ToString());
