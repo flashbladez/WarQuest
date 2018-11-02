@@ -12,12 +12,13 @@ namespace WarQuest.Characters
         [SerializeField] Text xpText;
         [SerializeField] Text levelText;
         [SerializeField] float multiplierForNextLevel = 3f;
-        
+        [SerializeField] GameObject levelUpEffect;
 
         int currentLevel;
         float xpToLevel;
         float currentXp;
-
+        float destroyEffectTimer = 7f;
+        GameObject levelUpParticleEffect = null;
         PlayerStats playerStats;
 
         void Start()
@@ -32,6 +33,7 @@ namespace WarQuest.Characters
                 levelText = LevelT.GetComponent<Text>();
             }
             playerStats = GetComponent<PlayerStats>();
+          //  levelUpEffect = GameObject.FindGameObjectWithTag("LevelUp");
            
             UpdateXpBar();
         }
@@ -82,6 +84,12 @@ namespace WarQuest.Characters
         {
             if (CurrentXP >= XpToLevel)
             {
+                
+                levelUpParticleEffect = Instantiate(levelUpEffect, transform);
+                levelUpParticleEffect.transform.position = gameObject.transform.TransformPoint(Vector3.up * 1);
+                // levelUpParticleEffect.transform.parent = null;
+                Invoke("CancelParticleEffect", destroyEffectTimer);
+
                 CurrentXP -= XpToLevel;
                 Level += 1;
                 XpToLevel += Mathf.Round(XpToLevel * multiplierForNextLevel) / Level;
@@ -100,6 +108,11 @@ namespace WarQuest.Characters
             xpText.text = (CurrentXP.ToString() + "/" + XpToLevel.ToString());
             levelText.text = (Level.ToString());
         }
-  
+
+        void CancelParticleEffect()
+        {
+            CancelInvoke();
+            Destroy(levelUpParticleEffect);
+        }
     }
 }

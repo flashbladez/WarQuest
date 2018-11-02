@@ -45,13 +45,7 @@ namespace WarQuest.Characters
         float currentXp;
         bool playerIsAlive = false;
         bool uiOpen = false;
-      //  string staminaKey = "StaminaKey";
-       // string energyKey = "EnergyKey";
-        //string mentalAgilityKey = "MentalAgilityKey";
-       // string strengthKey = "StrengthKey";
-      //  string hitKey = "HitKey";
-     //   string armourKey = "ArmourKey";
-      //  string totalDamageKey = "TotalDamageKey";
+   
         string currentXpKey = "CurrentXpKey";
         string maxXpKey = "MaxXpKey";
         string levelKey = "LevelKey";
@@ -60,6 +54,7 @@ namespace WarQuest.Characters
 
         private void Awake()
         {
+            PlayerPrefs.DeleteAll();
             playerXp = GetComponent<PlayerXP>();
             weaponSystem = GetComponent<WeaponSystem>();
             healthSystem = GetComponent<HealthSystem>();
@@ -72,7 +67,6 @@ namespace WarQuest.Characters
             if (PlayerPrefs.HasKey(levelKey))
             {
                 LoadStatsFromPlayerPrefs();
-              //  print(PlayerPrefs.GetFloat(levelKey));
             }
             SortPlayerStats();
             healthSystem.SethealthBarText();
@@ -250,14 +244,8 @@ namespace WarQuest.Characters
 
         public void SaveStatsToPlayerPrefs()
         {
-            PlayerPrefs.DeleteAll();
-          //  PlayerPrefs.SetFloat(staminaKey, playerStatsConfig.Stamina);
-          //  PlayerPrefs.SetFloat(energyKey, playerStatsConfig.Energy);
-          //  PlayerPrefs.SetFloat(strengthKey, playerStatsConfig.Strength);
-          //  PlayerPrefs.SetFloat(mentalAgilityKey, playerStatsConfig.MentalAgility);
-          //  PlayerPrefs.SetFloat(hitKey, playerStatsConfig.Hit);
-          //  PlayerPrefs.SetFloat(armourKey, playerStatsConfig.TotalArmour);
-          //  PlayerPrefs.SetFloat(totalDamageKey, playerStatsConfig.TotalDamage);
+         //   PlayerPrefs.DeleteAll();
+          
             PlayerPrefs.SetFloat(currentXpKey, playerStatsConfig.SavedXp);
             PlayerPrefs.SetFloat(maxXpKey, playerStatsConfig.MaxXpForNextLevel);
             PlayerPrefs.SetFloat(goldKey, playerStatsConfig.Gold);
@@ -268,13 +256,6 @@ namespace WarQuest.Characters
 
         public void LoadStatsFromPlayerPrefs()
         {
-          //  playerStatsConfig.Stamina = PlayerPrefs.GetFloat(staminaKey);
-          //  playerStatsConfig.Energy = PlayerPrefs.GetFloat(energyKey);
-          //  playerStatsConfig.Strength = PlayerPrefs.GetFloat(strengthKey);
-          //  playerStatsConfig.MentalAgility = PlayerPrefs.GetFloat(mentalAgilityKey);
-          //  playerStatsConfig.Hit = PlayerPrefs.GetFloat(hitKey);
-          //  playerStatsConfig.TotalArmour = PlayerPrefs.GetFloat(armourKey);
-          //  playerStatsConfig.TotalDamage = PlayerPrefs.GetFloat(totalDamageKey);
             playerStatsConfig.SavedXp = PlayerPrefs.GetFloat(currentXpKey);
             playerStatsConfig.MaxXpForNextLevel = PlayerPrefs.GetFloat(maxXpKey);
             playerStatsConfig.Gold = PlayerPrefs.GetFloat(goldKey);
