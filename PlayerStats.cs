@@ -45,7 +45,7 @@ namespace WarQuest.Characters
         float currentXp;
         bool playerIsAlive = false;
         bool uiOpen = false;
-   
+
         string currentXpKey = "CurrentXpKey";
         string maxXpKey = "MaxXpKey";
         string levelKey = "LevelKey";
@@ -59,10 +59,9 @@ namespace WarQuest.Characters
             weaponSystem = GetComponent<WeaponSystem>();
             healthSystem = GetComponent<HealthSystem>();
             specialAbility = GetComponent<SpecialAbilities>();
-            // var head = armourEquippedConfig.HeadSlotEquipped;
-            //  print(head.GetObjectName());//it works
-            uidDisplay = GameObject.Find("Environment/Game Canvas/PlayerStatsDisplay");
-            
+   
+            uidDisplay = GameObject.Find("Game Canvas/PlayerStatsDisplay");
+
             PlayerIsAlive = true;
             if (PlayerPrefs.HasKey(levelKey))
             {
@@ -80,7 +79,7 @@ namespace WarQuest.Characters
 
         public ArmourEquippedConfig ArmourEquippedConfig
         {
-            get{return armourEquippedConfig;}
+            get { return armourEquippedConfig; }
         }
 
         public PlayerStatsConfig PlayerStatsConfig
@@ -167,26 +166,26 @@ namespace WarQuest.Characters
 
         public void LevelUpStamina(float stamina)
         {
-           // healthSystem.MaxHealthpoints += stamina;
+            // healthSystem.MaxHealthpoints += stamina;
             playerStatsConfig.Stamina = healthSystem.MaxHealthpoints + stamina;
         }
 
         public void LevelUpEnergy(float energy)
         {
-          //  specialAbility.MaxEnergyPoints += energy;
+            //  specialAbility.MaxEnergyPoints += energy;
             playerStatsConfig.Energy = specialAbility.MaxEnergyPoints + energy;
         }
 
         public void LevelUpStrength(float strength)
         {
-          //  weaponSystem.SetBaseDamage += strength;
+            //  weaponSystem.SetBaseDamage += strength;
             playerStatsConfig.Strength = weaponSystem.SetBaseDamage + strength;
             playerStatsConfig.TotalDamage = playerStatsConfig.Strength;
         }
 
         public void LevelUpMentalAgi(float mentalAgility)
         {
-           // healthSystem.HealthPointsToRegenPerSecond += mentalAgility;
+            // healthSystem.HealthPointsToRegenPerSecond += mentalAgility;
             playerStatsConfig.MentalAgility = healthSystem.HealthPointsToRegenPerSecond + mentalAgility;
         }
 
@@ -197,7 +196,7 @@ namespace WarQuest.Characters
 
         public void LevelUpArmour(float armour)
         {
-           // healthSystem.Armour += armour;
+            // healthSystem.Armour += armour;
             playerStatsConfig.TotalArmour = healthSystem.Armour + armour;
         }
 
@@ -209,7 +208,7 @@ namespace WarQuest.Characters
         public void CurrentLevel()
         {
             playerStatsConfig.SavedLevel = playerXp.Level;
-           // playerXp.Level = playerStatsConfig.SavedLevel;
+            playerXp.Level = playerStatsConfig.SavedLevel;
         }
 
         public void MaxXp()
@@ -221,14 +220,14 @@ namespace WarQuest.Characters
         public void WeaponUpdate(WeaponConfig newWeaponEquipped)
         {
             weaponSystem.UpdateCurrentWeapon = newWeaponEquipped;
-            armourEquippedConfig.WeaponSlotEquipped =  newWeaponEquipped;
-           
+            armourEquippedConfig.WeaponSlotEquipped = newWeaponEquipped;
+
         }
 
         //Sets up player stats by getting all values from armour weapons and base values
         public void SortPlayerStats()
         {
-        
+
             CalculateTotalArmour();
             CalculateTotalStamina();
             CalculateTotalEnergy();
@@ -244,8 +243,8 @@ namespace WarQuest.Characters
 
         public void SaveStatsToPlayerPrefs()
         {
-         //   PlayerPrefs.DeleteAll();
-          
+               PlayerPrefs.DeleteAll();
+
             PlayerPrefs.SetFloat(currentXpKey, playerStatsConfig.SavedXp);
             PlayerPrefs.SetFloat(maxXpKey, playerStatsConfig.MaxXpForNextLevel);
             PlayerPrefs.SetFloat(goldKey, playerStatsConfig.Gold);
@@ -276,11 +275,11 @@ namespace WarQuest.Characters
             armourEquippedTotals += armourEquippedConfig.HandSlotEquipped.GetArmourValue();
             armourEquippedTotals += armourEquippedConfig.FootSlotEquipped.GetArmourValue();
             armourEquippedTotals += armourEquippedConfig.FingerSlotEquipped.GetArmourValue();
-           
+
             armourEquippedTotals += weaponSystem.UpdateCurrentWeapon.GetArmourValue();
             playerStatsConfig.TotalArmour = (playerStatsConfig.SavedLevel * baseArmour) + armourEquippedTotals;
             healthSystem.Armour = playerStatsConfig.TotalArmour;
-            
+
         }
 
         public void CalculateTotalStamina()
@@ -297,13 +296,13 @@ namespace WarQuest.Characters
             staminaEquippedTotals += armourEquippedConfig.FingerSlotEquipped.GetStamina();
             staminaEquippedTotals += weaponSystem.UpdateCurrentWeapon.GetStamina();//check stamina from weapon is being added
 
-          //  print(playerStatsConfig.Stamina + " FF   " + healthSystem.MaxHealthpoints);
+            //  print(playerStatsConfig.Stamina + " FF   " + healthSystem.MaxHealthpoints);
             playerStatsConfig.Stamina = healthSystem.MaxHealthpoints + (playerStatsConfig.SavedLevel * stamina) + staminaEquippedTotals;
             healthSystem.MaxHealthpoints = playerStatsConfig.Stamina;
 
-          //  print(playerStatsConfig.Stamina + "    " + healthSystem.MaxHealthpoints);
+            //  print(playerStatsConfig.Stamina + "    " + healthSystem.MaxHealthpoints);
             //put other modifiers here
-          
+
         }
 
         public void CalculateTotalEnergy()
@@ -322,7 +321,7 @@ namespace WarQuest.Characters
             playerStatsConfig.Energy = specialAbility.MaxEnergyPoints + (playerStatsConfig.SavedLevel * energy) + energyEquippedTotals;
             specialAbility.MaxEnergyPoints = playerStatsConfig.Energy;
             //put other modifiers here
-          
+
         }
 
         public void CalculateTotalMentalAgility()
@@ -342,7 +341,7 @@ namespace WarQuest.Characters
             playerStatsConfig.MentalAgility = healthSystem.HealthPointsToRegenPerSecond + (playerStatsConfig.SavedLevel * mentalAgility) + mentalAgilityEquippedTotals;
             healthSystem.HealthPointsToRegenPerSecond = playerStatsConfig.MentalAgility;
             //put other modifiers here
-        
+
         }
 
         public void CalculateTotalStrength()
@@ -358,13 +357,13 @@ namespace WarQuest.Characters
             strengthEquippedTotals += armourEquippedConfig.FootSlotEquipped.GetStrength();
             strengthEquippedTotals += armourEquippedConfig.FingerSlotEquipped.GetStrength();
             strengthEquippedTotals += weaponSystem.UpdateCurrentWeapon.GetStrength();
-         //   print(strengthEquippedTotals);
+            //   print(strengthEquippedTotals);
 
-            playerStatsConfig.Strength = baseStrength  + (playerStatsConfig.SavedLevel * strength) + strengthEquippedTotals;
+            playerStatsConfig.Strength = baseStrength + (playerStatsConfig.SavedLevel * strength) + strengthEquippedTotals;
             playerStatsConfig.TotalDamage = playerStatsConfig.Strength;
             weaponSystem.SetBaseDamage = playerStatsConfig.Strength;
-                //put other modifiers here
-         
+            //put other modifiers here
+
         }
 
         public void CalculateTotalHit()

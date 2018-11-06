@@ -13,7 +13,7 @@ namespace WarQuest.Characters
 
         [SerializeField] float chaseRadius = 6f;
         [SerializeField] WayPointContainer patrolPath;
-        [SerializeField] float timeToWaitAtWayPoint = 5.0f;
+     //   [SerializeField] float timeToWaitAtWayPoint = 5.0f;
         [SerializeField] float wayPointTolerance = 1.0f;
         [SerializeField] int xpValue = 0;
      
@@ -66,7 +66,6 @@ namespace WarQuest.Characters
                 isInWeaponCircle = distanceToEnemy <= currentWeaponRange;
                 isInChaseCircle = (distanceToEnemy > currentWeaponRange && distanceToEnemy <= chaseRadius);
                 isOutsideChaseCircle = distanceToEnemy > chaseRadius;
-                // print(distanceToEnemy + "  DTE  " + currentWeaponRange + "  CWR  " + chaseRadius + "  CR  " + target.name + "  iicc  "+ isInChaseCircle);
             }
             else if (target == null)
             {

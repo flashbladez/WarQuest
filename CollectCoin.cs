@@ -10,12 +10,15 @@ namespace WarQuest.Loot
         [Range(1f, 1000f)]
         [SerializeField] float coinToAward;//maybe make 2 vars one for gold one for silver
         [SerializeField] bool gold;
+        [SerializeField] AudioClip pickUpAudioClip;
+        AudioSource audioSource;
 
         float coin = 0;
         void Start()
         {
             coinToAward = Mathf.Round(coinToAward);
             coinToAward = Mathf.Floor(Random.Range(coinToAward / 2, coinToAward));
+            audioSource = GetComponent<AudioSource>();
         }
 
         void OnTriggerEnter(Collider other)
@@ -42,7 +45,11 @@ namespace WarQuest.Loot
                         other.gameObject.GetComponent<PlayerStats>().PlayerStatsConfig.Silver += coinToAward;
                     }
                 }
+                other.GetComponent<PlayerStats>().SaveStatsToPlayerPrefs();
+                audioSource.PlayOneShot(pickUpAudioClip);
+
             }
+            
         }
     }
 }

@@ -16,7 +16,7 @@ namespace WarQuest.Environment
         private void Start()
         {
             audioSource = GetComponent<AudioSource>();
-            audioSource.volume = 1f;
+            audioSource.volume = 0f;
             
         }
 
@@ -34,17 +34,19 @@ namespace WarQuest.Environment
         }
 
         void OnTriggerExit(Collider other)
-        {//after clip finishes wait a random time before starting again
-         //music fades out the further away from zone player gets and maybe blends from one clip to another from zone to zone
+        {
+            //todo after clip finishes wait a random time before starting again
+            //music fades out the further away from zone player gets and blends from one clip to another from zone to zone
             if (other.gameObject.GetComponent<PlayerControl>())
             {
-              InvokeRepeating("FadeMusic",1f,1f);
+                InvokeRepeating("FadeMusic",1f,1f);
             }
         }
 
 
         void FadeMusic()
         {
+            CancelInvoke("WakeUpMusic");
             if (audioSource.volume > 0f) {
                 audioSource.volume -= .05f;
             }
@@ -57,6 +59,7 @@ namespace WarQuest.Environment
 
         void WakeUpMusic()
         {
+            CancelInvoke("FadeMusic");
             if (audioSource.volume < 1f)
             {
                 audioSource.volume += .05f;

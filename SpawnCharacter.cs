@@ -10,7 +10,7 @@ namespace WarQuest.Characters
         [SerializeField] GameObject characterPrefab;
         [SerializeField] float respawnDelay = 5f;
         [SerializeField] int startingWaypoint = 0;
-
+        [SerializeField] bool reSpawnAllowed = true;
         void Start()
         {
             InstantiateCharacter();
@@ -21,7 +21,13 @@ namespace WarQuest.Characters
         {
             if(gameObject.transform.childCount == 0)
             {
-                Invoke("InstantiateCharacter", respawnDelay);
+                if (reSpawnAllowed)
+                {
+                    Invoke("InstantiateCharacter", respawnDelay);
+                }else
+                {
+                    Destroy(gameObject);
+                }
             }
         }
 

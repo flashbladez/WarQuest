@@ -14,6 +14,10 @@ namespace WarQuest.Characters
 
         float currentEnergyPoints = 0f;
         AudioSource audioSource;
+        string updateEnergyBar = "UpdateEnergyBar";
+        string nrgBar = "Game Canvas/EnergyBar";
+        string nrgText = "Game Canvas/EnergyText";
+        //abilities need a cooldown timer between each use
 
         float energyAsPercent
         {
@@ -60,10 +64,10 @@ namespace WarQuest.Characters
         {
             if (GetComponent<PlayerControl>())
             {
-                var EnergyB = GameObject.Find("Environment/Game Canvas/EnergyBar");
-                var EnergyT = GameObject.Find("Environment/Game Canvas/EnergyText");
-                energyBar = EnergyB.GetComponent<RawImage>();
-                energyTextAmount = EnergyT.GetComponent<Text>();
+                var EnergyBar = GameObject.Find(nrgBar);
+                var EnergyText = GameObject.Find(nrgText);
+                energyBar = EnergyBar.GetComponent<RawImage>();
+                energyTextAmount = EnergyText.GetComponent<Text>();
             }
         }
       
@@ -76,11 +80,11 @@ namespace WarQuest.Characters
 
         public void RegenerateEnergy()
         {
-            if (!IsInvoking("UpdateEnergyBar") && CurrentEnergyPoints < MaxEnergyPoints)
+            if (!IsInvoking(updateEnergyBar) && CurrentEnergyPoints < MaxEnergyPoints)
             {
                 var pointsToAdd = regenPointsPerSecond;
                 CurrentEnergyPoints = Mathf.Clamp(CurrentEnergyPoints + pointsToAdd, 0, MaxEnergyPoints);
-                Invoke("UpdateEnergyBar", 1f);
+                Invoke(updateEnergyBar, 1f);
             }
             else if (CurrentEnergyPoints >= MaxEnergyPoints)
             {
@@ -116,7 +120,7 @@ namespace WarQuest.Characters
         public void AttemptSpecialAbility(int abilityIndex, GameObject target = null)
         {
             //   var energyComponent = GetComponent<SpecialAbilities>();
-            if (gameObject.GetComponent<HealthSystem>().healthAsPercentage > Mathf.Epsilon)
+            if (gameObject.GetComponent<HealthSystem>().HealthAsPercentage > Mathf.Epsilon)
             {
                 var energyCost = abilities[abilityIndex].GetEnergyCost();
                 if (energyCost <= CurrentEnergyPoints)

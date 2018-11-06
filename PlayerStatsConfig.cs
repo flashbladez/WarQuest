@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 //This script saves all players values so they can be retrieved everytime the player instantiates.
 
 namespace WarQuest.Characters
 {
+   
     [CreateAssetMenu(menuName = ("RPG/PlayerStatsConfig"))]
+    [System.Serializable]
     public class PlayerStatsConfig : ScriptableObject
     {
-
+       
         [SerializeField] float stamina;
         [SerializeField] float energy;
         [SerializeField] float strength;
@@ -20,9 +23,11 @@ namespace WarQuest.Characters
         [SerializeField] float xpToNextLevel;
         [SerializeField] float gold;
         [SerializeField] float silver;
+        [SerializeField] float totalDamage;
         [SerializeField] int level;
-    
       
+       // EditorUtility.SetDirty(PlayerStatsConfig);
+        
         public float Stamina
         {
             get{return stamina;}
@@ -57,6 +62,12 @@ namespace WarQuest.Characters
         {
             get { return totalArmour; }
             set { totalArmour = value; }
+        }
+
+        public float TotalDamage
+        {
+            get { return totalDamage; }
+            set { totalDamage = value; }
         }
 
         public int SavedLevel
