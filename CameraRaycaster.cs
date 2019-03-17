@@ -65,7 +65,6 @@ namespace WarQuest.CameraUI
 
         bool RaycastForEnemy(Ray ray)
         {
-
           if (GameObject.FindGameObjectWithTag("Player"))
           {
                 RaycastHit hitInfo;
