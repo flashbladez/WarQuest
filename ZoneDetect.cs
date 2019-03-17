@@ -9,9 +9,13 @@ namespace WarQuest.Environment
     {
         [SerializeField] string zoneName = "";
         [SerializeField] GameObject textDisplay;
-        [SerializeField] AudioClip[] audioClip;
+        [SerializeField] AudioClip[] audioClips;
+        [SerializeField] bool playMusic = true;
+
+        string wakeUpMusic = "WakeUpMusic";
+        string fadeMusic = "FadeMusic";
         AudioSource audioSource;
-         int randomNumber = 0;
+        int randomNumber = 0;
 
         private void Start()
         {
@@ -22,13 +26,18 @@ namespace WarQuest.Environment
 
         void OnTriggerEnter(Collider other)
         {
+           
             if (other.gameObject.GetComponent<PlayerControl>())
             {
-                randomNumber = Random.Range(0, audioClip.Length);
                 textDisplay.GetComponent<ZoneDisplayText>().DisplayZoneText(zoneName);
-                audioSource.clip = audioClip[randomNumber];
-                audioSource.Play(0);
-                InvokeRepeating("WakeUpMusic", 1f, 1f);
+                if (playMusic)
+                {
+                    randomNumber = Random.Range(0, audioClips.Length);
+                    audioSource.clip = audioClips[randomNumber];
+                    audioSource.Play(0);
+                    CancelInvoke(fadeMusic);
+                    InvokeRepeating(wakeUpMusic, 1f, 1f);
+                }
             }
 
         }
@@ -39,14 +48,16 @@ namespace WarQuest.Environment
             //music fades out the further away from zone player gets and blends from one clip to another from zone to zone
             if (other.gameObject.GetComponent<PlayerControl>())
             {
-                InvokeRepeating("FadeMusic",1f,1f);
+                CancelInvoke(wakeUpMusic);
+                if (playMusic) {
+                    InvokeRepeating(fadeMusic, 1f, 1f);
+                }
             }
         }
 
 
         void FadeMusic()
         {
-            CancelInvoke("WakeUpMusic");
             if (audioSource.volume > 0f) {
                 audioSource.volume -= .05f;
             }
@@ -59,7 +70,6 @@ namespace WarQuest.Environment
 
         void WakeUpMusic()
         {
-            CancelInvoke("FadeMusic");
             if (audioSource.volume < 1f)
             {
                 audioSource.volume += .05f;

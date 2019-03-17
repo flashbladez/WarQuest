@@ -12,10 +12,11 @@ namespace WarQuest.Environment
 
         DistanceGameObjectsConfig distanceGameObjectConfig;
         GameObject[] gameObjectToDeactivate;
+        string distanceObjects = "DistanceObjects";
 
         void Start()
         {
-            distanceGameObjectConfig = GameObject.FindGameObjectWithTag("DistanceObjects").GetComponent<DistanceGameObjectsConfig>();
+            distanceGameObjectConfig = GameObject.FindGameObjectWithTag(distanceObjects).GetComponent<DistanceGameObjectsConfig>();
         }
 
 
