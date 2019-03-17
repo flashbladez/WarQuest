@@ -65,6 +65,7 @@ namespace WarQuest.CameraUI
 
         bool RaycastForEnemy(Ray ray)
         {
+
           if (GameObject.FindGameObjectWithTag("Player"))
           {
                 RaycastHit hitInfo;
@@ -83,7 +84,6 @@ namespace WarQuest.CameraUI
                
                 if (enemyHit)
                 {
-                   // print(enemyHit);
                     Cursor.SetCursor(enemyCursor, cursorHotspot, CursorMode.Auto);
                     onMouseOverEnemy(enemyHit);
                 return true;
