@@ -14,6 +14,7 @@ namespace WarQuest.Characters
         [SerializeField] bool red = false;
         [SerializeField] bool blue = false;
         [SerializeField] bool grey = false;
+        [SerializeField] bool orange = false;
         [SerializeField] string characterType = null;
         
         void OnDrawGizmos()
@@ -59,6 +60,11 @@ namespace WarQuest.Characters
                 if (grey)
                 {
                     Gizmos.color = Color.grey;
+                }
+                if (orange)
+                {
+                    Color _orange = new Color(1.0f, 0.3f, 0.1f);
+                    Gizmos.color = _orange;
                 }
 
                 Gizmos.DrawSphere(waypoint.position, .2f);

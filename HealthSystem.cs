@@ -11,12 +11,12 @@ namespace WarQuest.Characters
     public class HealthSystem : MonoBehaviour
     {
 
-        [SerializeField] float maxHealthPoints = 100f;
+        [SerializeField] float maxHealthPoints = 100f;//todo only set this here for enemy and npcs etc not player, player stats will set it
         [SerializeField] AudioClip[] damageSounds;
         [SerializeField] AudioClip[] deathSounds;
         [SerializeField] float deathVanishSeconds = 1.5f;
         [SerializeField] float healthPointsToRegenPerSecond = 0f;
-        [SerializeField] float armour;
+        [SerializeField] float armour;    //todo not set for player here player stats will set it
         [SerializeField] Text healthDisplayText = null;
         [SerializeField] Image healthBar = null;
         [SerializeField] GameObject lootTable = null;
@@ -48,12 +48,9 @@ namespace WarQuest.Characters
         public float MaxHealthpoints
         {
             get { return maxHealthPoints; }
-            set
-            {
-                maxHealthPoints = value;
+            set { maxHealthPoints = value;
                 CurrentHealthPoints = MaxHealthpoints;
-                UpdateHealthBar();
-            }
+                UpdateHealthBar(); }
         }
 
         public float HealthPointsToRegenPerSecond
@@ -80,7 +77,6 @@ namespace WarQuest.Characters
             UpdateHealthBar();
         }
 
-
         void Update()
         {
             if (CurrentHealthPoints < MaxHealthpoints)
@@ -99,6 +95,7 @@ namespace WarQuest.Characters
                 healthDisplayText = HT.GetComponent<Text>();
             }
         }
+
         void UpdateHealthBar()
         {
             if (healthBar)

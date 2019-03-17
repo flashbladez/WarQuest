@@ -66,7 +66,7 @@ namespace WarQuest.Characters
         public void CalculateTotalStrength()
         {
            
-            weaponSystem.SetBaseDamage = level * baseStrength;
+            weaponSystem.BaseDamage = level * baseStrength;
         }
 
         public void CalculateTotalHit()

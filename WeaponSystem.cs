@@ -30,11 +30,12 @@ namespace WarQuest.Characters
             character = GetComponent<Character>();
             animator = GetComponent<Animator>();
             //UpdateCurrentWeapon = playerStats.ArmourEquippedConfig.WeaponSlotEquipped;
-            PutWeaponInHand(currentWeaponConfig);
+           
             SetAttackAnimation();
+            PutWeaponInHand(currentWeaponConfig);
         }
 
-        public float SetBaseDamage {
+        public float BaseDamage {
             get{ return baseDamage; }
             set{ baseDamage = value; }
         }
@@ -57,7 +58,7 @@ namespace WarQuest.Characters
             }
             else
             {
-                var targetHealth = target.GetComponent<HealthSystem>().healthAsPercentage;
+                var targetHealth = target.GetComponent<HealthSystem>().HealthAsPercentage;
                 targetIsDead = targetHealth <= Mathf.Epsilon;
 
                 var distanceTotarget = Vector3.Distance(transform.position, target.transform.position);
@@ -65,7 +66,7 @@ namespace WarQuest.Characters
 
             }
 
-            float characterHealth = GetComponent<HealthSystem>().healthAsPercentage;
+            float characterHealth = GetComponent<HealthSystem>().HealthAsPercentage;
             bool characterIsDead = (characterHealth <= Mathf.Epsilon);
 
             if(characterIsDead || targetIsOutOfRange || targetIsDead)
@@ -89,7 +90,10 @@ namespace WarQuest.Characters
                                                                   
             var weaponPrefab = weaponToUse.GetWeaponPrefab();
             GameObject dominantHand = RequestDominantHand();
-            Destroy(weaponObject);
+            if (weaponObject)
+            {
+                Destroy(weaponObject);
+            }
             weaponObject = Instantiate(weaponPrefab, dominantHand.transform);
             weaponObject.transform.localPosition = UpdateCurrentWeapon.gripTransform.localPosition;
             weaponObject.transform.localRotation = UpdateCurrentWeapon.gripTransform.localRotation;
@@ -114,7 +118,6 @@ namespace WarQuest.Characters
 
         public void AttackTarget(GameObject targetToAttack)
         {
-         
             target = targetToAttack;
 
             StartCoroutine(AttackTargetRepeatedly());
@@ -122,11 +125,10 @@ namespace WarQuest.Characters
 
         IEnumerator AttackTargetRepeatedly()
         {
-     
             if (target)
             {
-               attackerStillAlive = GetComponent<HealthSystem>().healthAsPercentage >= Mathf.Epsilon;
-               targetStillAlive = target.GetComponent<HealthSystem>().healthAsPercentage >= Mathf.Epsilon;
+               attackerStillAlive = GetComponent<HealthSystem>().HealthAsPercentage >= Mathf.Epsilon;
+               targetStillAlive = target.GetComponent<HealthSystem>().HealthAsPercentage >= Mathf.Epsilon;
             }
 
             while(attackerStillAlive && targetStillAlive)
@@ -161,7 +163,7 @@ namespace WarQuest.Characters
 
         IEnumerator DamageAfterDelay(float damageDelay)
         {
-            target.GetComponent<HealthSystem>().TakeDamage(CalculateDamage());
+            target.GetComponent<HealthSystem>().TakeDamage(BaseDamage);
             yield return new WaitForSecondsRealtime(damageDelay);
         }
 
@@ -185,16 +187,10 @@ namespace WarQuest.Characters
         }
 
        
-        float CalculateDamage()
-        {
-            if (GetComponent<PlayerControl>())
-            {
-                return baseDamage * playerStats.PlayerStatsConfig.SavedLevel;   //todo maybe consider the multplier to be based on level sounds better idea
-            }
-            else
-            {
-                return baseDamage;
-            }
-        }
+     //   float CalculateDamage()
+       // {
+              //todo maybe consider the multplier to be based on level sounds better idea
+         //     return baseDamage;
+       //  }
     }
 }

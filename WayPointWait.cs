@@ -7,11 +7,12 @@ namespace WarQuest.Characters
     {
 
         [SerializeField] float timeToWait = 5f;
-
+    
         public float TimeToWait
         {
             get { return timeToWait; }
             set { timeToWait = value; }
         }
+
     }
 }

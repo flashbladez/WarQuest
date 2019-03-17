@@ -7,16 +7,5 @@ namespace WarQuest.Characters
     public class DominantHand : MonoBehaviour
     {
 
-        // Use this for initialization
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
     }
 }

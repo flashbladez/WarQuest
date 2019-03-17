@@ -35,7 +35,6 @@ namespace WarQuest.Characters
         [Header("Audio settings")]
         [SerializeField] float audioSourceSpatialBlend = 0.5f;
 
-
         CameraRaycaster cameraRaycaster;
         NavMeshAgent navMeshAgent;
         Animator animator;
@@ -100,7 +99,6 @@ namespace WarQuest.Characters
             return animatorOverideController;
         }
 
-
         public void Kill()
         {
             isAlive = false;
@@ -113,7 +111,7 @@ namespace WarQuest.Characters
 
         public void OnAnimatorMove()
         {
-            //Note makes camera shake for some reason
+            //Note makes camera shake
             //   if(Time.deltaTime > 0)
             //   {
             //  Vector3 velocity = (animator.deltaPosition * moveSpeedMultiplier) / Time.deltaTime;
@@ -137,7 +135,7 @@ namespace WarQuest.Characters
             }
         }
 
-       public void Move(Vector3 movement)
+        public void Move(Vector3 movement)
         {
             SetForwardAndTurn(movement);
             ApplyExtraTurnRotation();

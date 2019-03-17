@@ -6,7 +6,7 @@ namespace WarQuest.Characters
     public class SpecialAbilities : MonoBehaviour
     {
         [SerializeField] RawImage energyBar;
-        [SerializeField] float maxEnergyPoints = 100f;
+        [SerializeField] float maxEnergyPoints = 100f;// todo not set for player here player stats will set it
         [SerializeField] float regenPointsPerSecond = 1f;
         [SerializeField] AbilityConfig[] abilities;
         [SerializeField] AudioClip outOfEnergy;
